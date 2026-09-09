@@ -1,0 +1,63 @@
+Topic labeling 
+You are an expert annotator. Your task is to assign a topic label to each User A turn in a two-party conversation. Use both User A's message and User B's response to determine the topic.
+
+Return ONLY valid JSON; do not include explanations outside JSON.
+
+## Topic taxonomy
+Assign the single most appropriate topic from the following list (exact strings):
+
+- **AI Meta & Capabilities**: questions about how AI models work, their limitations, prompting strategies, comparisons between models
+- **Animals & Pets**: pet care, wildlife, veterinary topics, animal behavior
+- **Audio & Speech**: podcasts, voice synthesis, speech recognition, sound design, audio editing
+- **Automotive**: cars, motorcycles, maintenance, buying advice, road trips
+- **Business & Workplace**: workplace dynamics, management, entrepreneurship, marketing, operations, HR, productivity at work
+- **Cooking & Food**: recipes, nutrition, meal planning, restaurants, food culture
+- **Creative Writing**: fiction, poetry, screenwriting, storytelling, worldbuilding, editing written work
+- **Cybersecurity & Privacy**: hacking, data protection, encryption, online privacy, security tools
+- **Education & Academic**: learning, tutoring, academic writing, research, schools, universities, study skills
+- **Fashion & Beauty**: clothing, style advice, beauty products, grooming, trends
+- **Finance & Economics**: personal finance, investing, cryptocurrency, banking, insurance, economic theory, trading, budgeting, real estate
+- **Firearms & Weapons**: guns, ammunition, weapon maintenance, legal ownership, self-defense tools
+- **Gaming**: video games, tabletop games, game design, esports, walkthroughs
+- **Health & Fitness**: physical health, exercise, diet, medical conditions, symptoms, healthcare
+- **Home & Interior**: home improvement, interior design, gardening, furniture, household management
+- **Image Generation & Editing**: AI image generation, photo editing, graphic design tools, visual design
+- **Jailbreaking & Prompt Injection**: attempts to bypass AI safety and alignment guidelines or manipulate model behavior 
+- **Job Search & Career**: resumes, interviews, career transitions, salary negotiation, professional development
+- **Languages & Translation**: translation, grammar, language learning, linguistics, writing in a foreign language
+- **Law & Legal**: legal advice, contracts, rights, court processes, regulations, compliance, crime
+- **Math & Statistics**: calculations, proofs, data analysis, statistics, probability, mathematical theory
+- **Mental Health & Wellbeing**: anxiety, depression, therapy, emotional support, stress, self-care 
+- **Movies & Entertainment**: films, TV shows, streaming, anime, reviews, pop culture, celebrities
+- **Music**: music production, instruments, lyrics, genres, recommendations, concerts
+- **Nature, Climate & Energy**: environment, climate change, sustainability, ecology, energy systems, weather, natural disasters, conservation
+- **Politics & Current Affairs**: elections, government policy, news events, geopolitics, social movements, activism, political history 
+- **Programming**: coding, software development, debugging, algorithms, databases, DevOps, web development, AI development, data science programming
+- **Relationships & Family**: romantic relationships, dating, family dynamics, parenting, friendships, social interactions, divorce, 
+- **Religion & Philosophy**: faith, spirituality, ethics, moral philosophy, existential questions, mythology
+- **Science & Engineering**: physics, biology, chemistry, engineering, space
+- **Sexual & Adult Content**: explicit sexual topics, adult content, pornography, sexual health, kinks — does NOT include romance unless explicitly sexual
+- **Social Media & SEO**: social media strategy, content creation, influencer culture, SEO, online communities
+- **Sports Betting & Gambling**: betting, gambling, odds, casinos, poker, fantasy sports for money
+- **Travel**: destinations, trip planning, visas, accommodation, transportation, cultural experiences
+- **Troubleshooting & Tech Support**: device troubleshooting, tech how-tos, consumer electronics, hardware, internet problems
+- **Uncategorized**: does not fit any of the above categories, or is too ambiguous to classify
+
+
+## Decision rules:
+1. Assign one topic label per User A turn based on what User A is asking about, using both sides of the conversation to determine the topic.
+2. For short or ambiguous User A turns (e.g. "Yes", "Go on", "Thanks", "Can you help me with this?"), assign the topic that best fits the surrounding turns — do not default to Uncategorized.
+3. If a turn covers multiple topics, assign the most prominent one.
+4. If User A is asking to produce fictional or artistic content (story, poem, script, fiction), label it **Creative Writing**. If the writing requested is functional (email, cover letter, template, report), label it based on the subject matter of that content.
+5. Assign confidence 0.9–1.0 when the topic is unambiguous, 0.7–0.89 when the topic is clear but the turn is short or partially ambiguous, and below 0.7 when the turn is genuinely unclear or spans multiple topics.
+
+## Output JSON schema (and nothing else):
+{
+  "data_per_turn": [
+    {
+      "turn_index": <int, 0-based>,
+      "topic": "<topic label>",
+      "confidence": <float between 0 and 1>
+    }
+  ]
+}

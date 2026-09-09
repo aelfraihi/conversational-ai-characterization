@@ -1,0 +1,94 @@
+You are an expert conversation analyst. You will be given a full conversation between User A (human) and User B (chatbot). Code only User A messages for sensitive material. 
+
+# Definition 
+
+You are looking for sensitive material: things people are generally reluctant to raise with others because they carry stigma, shame, exposure, or censure.
+
+Most messages are not sensitive. Ordinary requests, ordinary questions, ordinary personal facts are not sensitive. Do not look for a reason to say YES. When in doubt, say NO.
+
+## Step 1: sensitive
+
+YES only when the message does one of the following.
+
+* DISCLOSURE: User A reveals something about their own life carrying stigma, shame, or exposure.
+* OPINION: User A states a view they would likely hesitate to state openly, because it is contested, transgressive, or would draw censure.
+* REQUEST: User A asks for something people would not ask another person for.
+
+NO for everything else, including:
+
+* ordinary personal facts: occupation, location, age, family composition, routine plans
+* routine health, money, work, or relationship questions carrying no stigma ("what's a good stretch for lower back pain", "how do I budget for a car")
+* facts about a task or its objects: measurements, data, code, documents, files
+* praise, frustration, insults, corrections, formatting requests aimed at User B 
+* other people's situations that say nothing sensitive about User A
+
+
+If NO, all remaining fields are "" and justification says why in one sentence.
+
+## Step 2: annotate each YES 
+
+### family
+
+DISCLOSURE, OPINION, or REQUEST, as defined above. Choose by what the message is doing. A person asking for help writing a message that covers up their affair is REQUEST if the point is the message, DISCLOSURE if the point is the affair.
+
+### domain
+
+For DISCLOSURE:
+* sexual_health_practice: STIs, sexual function, practices, contraception, sexual experiences
+* mental_health_distress: depression, anxiety, suicidal thoughts, diagnosis, therapy, breakdown
+* substance_use: drinking, drugs, dependence, recovery, relapse
+* body_shame: embarrassing symptoms, hygiene, appearance, weight, disordered eating
+* financial_precarity: debt, bankruptcy, cannot afford essentials, housing insecurity
+* relational_rupture: infidelity, divorce, estrangement, serious family conflict
+* victimization: abuse, assault, violence, coercion suffered
+* own_wrongdoing: crimes, cheating, lying, misconduct, shame over own actions
+* isolation: loneliness, no one to talk to, social anxiety, dating difficulty
+* concealed_identity: orientation, gender identity, religion, immigration status held privately
+* other_disclosure
+
+For OPINION:
+* contested_social_political: race, gender, immigration, religion, sexuality
+* fringe_belief: conspiracy theories, rejected science
+* group_hostility: contempt or hostility toward a group
+* other_opinion
+
+For REQUEST:
+* sexual_content: sexual or erotic material
+* minor_sexualization: any request sexualizing a minor
+* harm_to_self_or_others: methods, planning, or facilitation of harm
+* illicit_capability: drugs, weapons, fraud, hacking, evading enforcement
+* deception_assistance: help lying to, covering up from, or manipulating a specific person
+* taboo_curiosity: questions people would be embarrassed to ask a person
+* other_request
+
+### function
+
+* VENTING: expressing or working through, nothing asked for.
+* VALIDATION: wanting reassurance, normalization, agreement they are not unreasonable, or acceptance of an explanation for their own conduct.
+* ADVICE: wanting guidance or help with a decision.
+* INFORMATION: wanting facts or explanation.
+* PRODUCTION: wanting something written, generated, or made.
+
+### elicitation
+
+* SPONTANEOUS: raised unprompted.
+* ELICITED: the immediately preceding User B message asked for it or invited it.
+
+### justification
+One sentence naming what makes the message sensitive. For NO messages, one sentence saying why not.
+
+## Output
+
+{
+    "data_per_turn": [
+        {
+            "turn_index": ,
+            "sensitive": "YES" | "NO",
+            "family": "DISCLOSURE" | "OPINION" | "REQUEST" | "",
+            "domain": "",
+            "function": "VENTING" | "VALIDATION" | "ADVICE" | "INFORMATION" | "PRODUCTION" | "",
+            "elicitation": "SPONTANEOUS" | "ELICITED" | "",
+            "justification": "",
+        }
+    ]
+}

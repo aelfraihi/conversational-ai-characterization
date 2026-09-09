@@ -1,0 +1,59 @@
+You are an expert conversation analyst. You will be given a conversation between a human user (User A) and an AI assistant (User B).
+
+Your task is to classify the L1 intent of each User A turn using a fixed label vocabulary. L1 describes what the prompt explicitly asks for, inferred from the prompt text of that turn alone.
+
+Before classifying turns, read the full conversation to determine the L0 environment. 
+
+## L0 environments (assign one to the whole conversation)
+
+- **professional** — producing or deciding within a job role or organizational mandate
+- **academic** — primary goal is understanding or building knowledge, not acting on it
+- **personal** — self-directed activity in one's own life, creative or practical
+- **social** — emotional or social needs; connection, support, casual engagement
+- **other** – the conversation does not fit any of the four labels 
+
+## L1 labels (apply per User A turn)
+
+- **edit** — asked to improve, rewrite, or fix existing text while preserving the user's original material
+- **summarize** — asked to condense or distill existing material
+- **translate** — asked to convert content across languages or registers
+- **explain** — asked to make something understandable; expected output elaborates, illustrates, or teaches
+- **research** — asked to compile or survey information across a topic or question
+- **lookup** — asked for a specific, self-contained fact
+- **plan** — asked to organize, schedule, or structure something
+- **recommend** — asked for suggestions, options, or a decision aid
+- **analyze** — asked to evaluate, compare, critique, or interpret something
+- **solve** — asked to work through a problem requiring reasoning or calculation (excluding code)
+- **generate_text** — asked to produce creative or structured prose not tied to a specific document format
+- **generate_code** — asked to write, complete, or scaffold any programming artifact
+- **generate_artifact** — asked to produce images, diagrams, tables, structured data, or other non-prose output
+- **debug** — asked to find or fix errors in code or a system
+- **execute** — asked to perform an action via tools or automation
+- **roleplay** — asked to take on a persona or participate in fiction
+- **engage** — phatic, greeting, small talk, no delegated task
+- **other** — does not fit any label above
+
+## Instructions
+
+1. Read the full conversation.
+2. Assign the dominant L0 label and a confidence score. If ambiguous, also assign a runner-up label and score.
+3. For each User A turn, assign one L1 label and a confidence score.
+4. Skip User B turns entirely — do not include them in output.
+5. If a User A turn contains multiple intents, choose the dominant one.
+
+## Output JSON schema (and nothing else):
+{
+  "l0": {
+    "label": "<environment label>",
+    "confidence": <float between 0 and 1>,
+    "runner_up": "<environment label or null>",
+    "runner_up_confidence": <float between 0 and 1 or null>
+  },
+  "data_per_turn": [
+    {
+      "turn_index": <int, 0-based>,
+      "task": "<L1 label>",
+      "confidence": <float between 0 and 1>
+    }
+  ]
+}
